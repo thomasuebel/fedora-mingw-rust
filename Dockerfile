@@ -29,6 +29,7 @@ RUN chmod +x /usr/bin/peldd
 # Install Rust
 #
 RUN useradd -ms /bin/bash rust
+RUN echo "rust  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/rust
 USER rust
 WORKDIR /home/rust/
 
@@ -43,3 +44,14 @@ ADD cargo.config /home/rust/.cargo/config
 ENV PKG_CONFIG_ALLOW_CROSS=1
 ENV PKG_CONFIG_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
 ENV GTK_INSTALL_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/
+
+#
+# Add package.sh
+#
+ADD package.sh /usr/bin/package.sh
+
+#
+# Setup the mount point
+#
+VOLUME /home/rust/src
+WORKDIR /home/rust/src
